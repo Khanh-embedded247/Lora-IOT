@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Page</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/personal/${username}">Home</a></li>
+            <li><a href="/info.html">Giới thiệu</a></li>
+            <li><a href="/logout">Đăng xuất</a></li>
+            <li><a href="/personal.html">Trang cá nhân</a></li>
+        </ul>
+    </nav>
+    
+    <!-- Hiển thị thông tin cá nhân của người dùng -->
+    <h1>Thông tin cá nhân</h1>
+    <p>Email: user@example.com</p>
+    <p>Password: ********</p>
+    
+    <!-- Form để thay đổi mật khẩu -->
+    <form action="/change-password" method="post">
+        <input type="password" name="currentPassword" placeholder="Mật khẩu hiện tại" required>
+        <input type="password" name="newPassword" placeholder="Mật khẩu mới" required>
+        <input type="password" name="confirmPassword" placeholder="Xác nhận mật khẩu mới" required>
+        <button type="submit">Thay đổi mật khẩu</button>
+    </form>
+</body>
+</html>

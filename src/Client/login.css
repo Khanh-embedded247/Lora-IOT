@@ -1,0 +1,350 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    transition: all 1.5s;
+}
+
+body {
+    background-image: url('https://wallpaperaccess.com/full/398959.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+   
+    transition: none;
+}
+
+.header {
+    position:fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 99;
+    animation: slideDown 1s ease-in-out;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+.header .logo {
+    font-size: 2em;
+    font-weight: 700;
+    color: #eff707;
+    text-decoration: none;
+}
+
+.header .nav a {
+    font-size: 1.2em;
+    color: #720cef;
+    text-decoration: none;
+    margin-left: 40px;
+    font-weight: 600;
+    transition: color 0.3s, transform 0.3s;
+    position:sticky;
+}
+
+.header .nav a:hover {
+    color: #FF6633;
+    transform: scale(1.1);
+}
+
+.nav a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: #FF6633;
+    border-radius: 5px;
+    bottom: -6px;
+    transform: scaleX(0);
+    transition: .5s;
+}
+
+.nav a:hover::after {
+    transform: scaleX(1);
+    background-color: #FF6633;
+    transform: scale(1.1);
+}
+
+section {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    padding: 80px 200px 0;
+    align-items: center;
+}
+@keyframes slideLeft {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+.section .content {
+    max-width: 600px;
+    color: #10ed6c;
+    
+    animation: slideLeft 3s ease-in-out;
+}
+.get-started {
+    font-size: 1.2em;
+    color: #4f21f4;
+    text-decoration: none;
+    border: 2px solid #FF6633;
+    font-weight: 500;
+    padding: 10px 40px;
+    border-radius: 40px;
+    transition: .5s;
+    animation: slideLeft 3s ease-in-out; /* Áp dụng animation cho nút */
+    position: absolute; /* Đặt vị trí tuyệt đối để dễ dàng kiểm soát */
+    left: 200px; /* Đặt vị trí ban đầu ngoài màn hình bên trái */
+}
+
+
+
+.content h2 {
+    font-size: 3em;
+    letter-spacing: 0.3em;
+    color: #FF6633;
+    animation: slideLeft 3s ease-in-out;
+}
+
+.content p {
+    margin: 10px 0 40px;
+    animation: slideLeft 3s ease-in-out;
+}
+
+.content a {
+    text-decoration: none;
+    color: #740bf4;
+    border: 2px solid #FF6633;
+    font-weight: 500;
+    padding: 10px 40px;
+    border-radius: 40px;
+    transition: .5s;
+    animation: slideLeft 3s ease-in-out;
+}
+
+.content a:hover {
+    background-color: #0fe00f;
+    animation: slideLeft 3s ease-in-out;
+}
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+.Register {
+    position: relative;
+    width: 440px;
+    margin: 0 auto;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    animation: slideUp 1s ease-in-out;
+}
+
+
+
+.login h2 {
+    text-align: center;
+    color: #FF6633;
+    font-size: 2em;
+}
+
+.input-box {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    padding: 40px 0;
+}
+
+.input-box .input {
+    width: 100%;
+    height: 50px;
+    border: 2px solid #FF6633;
+    border-radius: 40px;
+    background: transparent;
+    outline: none;
+}
+
+::placeholder {
+    color: #333;
+    font-size: 1.2em;
+    padding: 0 20px;
+}
+
+.input-box i {
+    position: absolute;
+    top: 55px;
+    left: 400px;
+    font-size: 1.2em;
+    color: #6706f8;
+}
+
+.remember-forgot {
+    color: #3e0ee8;
+    display: flex;
+    justify-content: space-between;
+    font-weight: 500;
+    margin: 25px 0 15px;
+}
+
+.remember-forgot a {
+    color: #550cdd;
+    text-decoration: none;
+}
+
+.remember-forgot a:hover {
+    text-decoration: underline;
+    color: aqua;
+}
+
+button {
+    width: 100%;
+    height: 50px;
+    border: 1px solid #FF6633;
+    border-radius: 40px;
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+    background-color: #FF6633;
+    color: #ed9107;
+    transform: scale(1.1);
+}
+
+.register-link {
+    display: flex;
+    justify-content: center;
+    color: #f20606;
+}
+
+.register-link a {
+    text-decoration: none;
+    color: #dd0a0a;
+    font-weight: 600;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+
+.Login {
+    position: relative;
+    width: 440px;
+    margin: 0 auto;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    animation: slideUp 1s ease-in-out;
+}
+
+
+
+.login h2 {
+    text-align: center;
+    color: #FF6633;
+    font-size: 2em;
+}
+
+.input-box {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    padding: 40px 0;
+}
+
+.input-box .input {
+    width: 100%;
+    height: 50px;
+    border: 2px solid #FF6633;
+    border-radius: 40px;
+    background: transparent;
+    outline: none;
+}
+
+::placeholder {
+    color: #333;
+    font-size: 1.2em;
+    padding: 0 20px;
+}
+
+.input-box i {
+    position: absolute;
+    top: 55px;
+    left: 400px;
+    font-size: 1.2em;
+    color: #6706f8;
+}
+
+.remember-forgot {
+    color: #3e0ee8;
+    display: flex;
+    justify-content: space-between;
+    font-weight: 500;
+    margin: 25px 0 15px;
+}
+
+.remember-forgot a {
+    color: #550cdd;
+    text-decoration: none;
+}
+
+.remember-forgot a:hover {
+    text-decoration: underline;
+    color: aqua;
+}
+
+button {
+    width: 100%;
+    height: 50px;
+    border: 1px solid #FF6633;
+    border-radius: 40px;
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+    background-color: #FF6633;
+    color: #ed9107;
+    transform: scale(1.1);
+}
+
+.register-link {
+    display: flex;
+    justify-content: center;
+    color: #f20606;
+}
+
+.register-link a {
+    text-decoration: none;
+    color: #dd0a0a;
+    font-weight: 600;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}

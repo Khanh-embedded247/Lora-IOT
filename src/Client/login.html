@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./login.css">
+    <script src="https://kit.fontawesome.com/c9f5871d83.js" crossorigin="anonymous"></script>
+    <title>HOME247</title>
+</head>
+
+<body>
+    <header class="header">
+        <a href="#" class="logo"><i class="fa-solid fa-globe"></i>247-Technology</a>
+
+        <nav class="nav">
+            <a href="#"> Home </a>
+            <a href="#"> About </a>
+            <a href="#"> Menu </a>
+            <a href="#"> Review </a>
+            <a href="#"> Contact </a>
+        </nav>
+    </header>
+
+    <section class="home">
+        <div class="content">
+            <h2> Welcome!!!</h2>
+            <p> My name is DINH KHANH. I'm 22 years old . I'm an engineer Embedded Systems. Forever love <3 </p>
+            <a href="https://www.facebook.com" class="get-started" id="getStarted"> Get Started </a>
+        </div>
+        <div class="Register">
+            <h2> Register </h2>
+            <form action="#" id="formData">
+                <div class="input-box">
+                    <span class="icon">
+                        <i class="fa-solid fa-envelope"></i>
+                    </span>
+                    <input type="text" class="input" id="email" placeholder="Enter your email" autocomplete="off"
+                        required>
+                </div>
+                <div class="input-box">
+                    <span class="icon">
+                        <i class="fa-solid fa-lock"></i>
+                    </span>
+                    <input type="password" class="input" id="password" placeholder="Enter your password"
+                        autocomplete="off" required>
+                </div>
+                <div class="input-box">
+                    <span class="icon">
+                        <i class="fa-solid fa-user"></i>
+                    </span>
+                    <input type="text" class="input" id="username" placeholder="Enter your username" autocomplete="off"
+                        required>
+                </div>
+                <div class="remember-forgot">
+                    <label> <input type="checkbox"> Remember me</label>
+                    <a href="#"> Forgot Password? </a>
+                </div>
+                <button type="submit" form="formData" value="Submit">Register</button>
+
+                <div class="register-link">
+                    <p> Already a member?</p>
+                    <a href="#" id="login-link" class="login-link"> Login</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="Login" style="display: none;">
+            <h2> Login </h2>
+            <form action="#" id="loginForm">
+                <div class="input-box">
+                    <span class="icon">
+                        <i class="fa-solid fa-envelope"></i>
+                    </span>
+                    <input type="text" class="input" id="loginEmail" placeholder="Enter your email" autocomplete="off"
+                        required>
+                </div>
+                <div class="input-box">
+                    <span class="icon">
+                        <i class="fa-solid fa-lock"></i>
+                    </span>
+                    <input type="password" class="input" id="loginPassword" placeholder="Enter your password"
+                        autocomplete="off" required>
+                </div>
+
+                <div class="remember-forgot">
+                    <label> <input type="checkbox"> Remember me</label>
+                    <a href="#"> Not a member? </a>
+                </div>
+                <button type="submit" id="loginButton">Login</button>
+
+                <div class="register-link">
+                    <p> Not a member?</p>
+                    <a href="#" id="register-link" class="register-link"> Register</a>
+                </div>
+            </form>
+        </div>
+    </section>
+    <!-- Trang cá nhân của người dùng -->
+    <section class="personal" style="display: none;">
+        <div class="content">
+            <h2>Thông tin cá nhân của bạn</h2>
+            <p>Tên người dùng: <span id="usernameDisplay"></span></p>
+            <p>Email: <span id="emailDisplay"></span></p>
+        </div>
+    </section>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+        import { getDatabase, set, ref as sRef } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+    
+        const firebaseConfig = {
+            apiKey: "AIzaSyBbpFEAzqQstzkGq9v3nI9d122imUVltag",
+            authDomain: "iot247-bd003.firebaseapp.com",
+            databaseURL: "https://iot247-bd003-default-rtdb.firebaseio.com",
+            projectId: "iot247-bd003",
+            storageBucket: "iot247-bd003.appspot.com",
+            messagingSenderId: "884348310185",
+            appId: "1:884348310185:web:3675309b58fca9df804fb8"
+        };
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const getDb = getDatabase(app);
+        const auth = getAuth();
+        const db = getFirestore(app);
+    
+        // Đăng ký
+        let registerForm = document.getElementById("formData");
+        registerForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const username = document.getElementById('username').value;
+    
+            if (email === "" || password === "" || username === "") {
+                alert('Please fill out all fields.');
+            } else {
+                createUserWithEmailAndPassword(auth, email, password)
+                    .then(async (userCredential) => {
+                        const user = userCredential.user;
+                        console.log(user, 'created user');
+                        await setDoc(doc(db, "data", "users"), {
+                            email: user.email,
+                            username: username,
+                        });
+    
+                        console.log('registration success');
+                        alert("Đăng kí tài khoản thành công");
+    
+                        // Chuyển hướng người dùng đến trang cá nhân với URL có tên người dùng
+                        window.location.href = `/personal/${username}`;
+                    })
+                    .catch((error) => {
+                        const errorCode = error.code;
+                        const errorMessage = error.message;
+                        alert('Error creating user: ' + errorMessage);
+                    });
+            }
+        });
+    
+        // Đăng nhập
+        const loginForm = document.getElementById("loginForm");
+        loginForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const email = document.getElementById("loginEmail").value;
+            const password = document.getElementById("loginPassword").value;
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    // Successful login
+                    const user = userCredential.user;
+                    const username = email.split('@')[0];
+    
+                    // Chuyển hướng người dùng đến trang cá nhân với URL có tên người dùng
+                    window.location.href = `/personal/${username}`;
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    alert('Error logging in: ' + errorMessage);
+                });
+        });
+    </script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const getStartedButton = document.getElementById('getStarted');
+            const loginLink = document.getElementById('login-link');
+            const registerLink = document.getElementById('register-link');
+
+            if (localStorage.getItem('getStartedClicked') === 'true') {
+                getStartedButton.classList.add('slide-enter');
+            }
+
+            getStartedButton.addEventListener('click', function (e) {
+                e.preventDefault();
+                const content = document.querySelector('.content');
+                content.classList.add('slide-enter');
+
+                localStorage.setItem('getStartedClicked', 'true');
+            });
+
+            loginLink.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                const registerForm = document.querySelector('.Register');
+                const loginForm = document.querySelector('.Login');
+                if (registerForm.style.display === 'block') {
+                    registerForm.style.display = 'none';
+                    loginForm.style.display = 'block';
+                } else {
+                    registerForm.style.display = 'block';
+                    loginForm.style.display = 'none';
+                }
+            });
+
+            registerLink.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                const registerForm = document.querySelector('.Register');
+                const loginForm = document.querySelector('.Login');
+                if (loginForm.style.display === 'block') {
+                    registerForm.style.display = 'block';
+                    loginForm.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

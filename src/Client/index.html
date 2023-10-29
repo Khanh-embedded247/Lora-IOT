@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Cá Nhân</title>
+</head>
+<body>
+    <header>
+        <h1>Chào mừng bạn đến trang cá nhân</h1>
+        <button id="login">Đăng nhập</button>
+    </header>
+    <div id="content">
+        <!-- Nội dung trang cá nhân sẽ được hiển thị ở đây -->
+    </div>
+    <script src="app.js"></script>
+    <!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js"></script>
+
+<script>
+    // Khởi tạo Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyBbpFEAzqQstzkGq9v3nI9d122imUVltag",
+                authDomain: "iot247-bd003.firebaseapp.com",
+                databaseURL: "https://iot247-bd003-default-rtdb.firebaseio.com",
+                projectId: "iot247-bd003",
+                storageBucket: "iot247-bd003.appspot.com",
+                messagingSenderId: "884348310185",
+                appId: "1:884348310185:web:3675309b58fca9df804fb8"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+</script>
+
+</body>
+</html>

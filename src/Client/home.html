@@ -1,0 +1,245 @@
+const char home_html[] PROGMEM = R"rawliteral(
+
+<!DOCTYPE HTML><html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+  <title>My SenSor Data</title>
+  <style>
+    html {
+     font-family: Arial;
+     display: inline-block;
+     margin: 0px auto;
+     text-align: center;
+    }
+    nav {
+            background-color: #333;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 20px;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+    h2 { font-size: 3.0rem; }
+    p { font-size: 3.0rem; }
+    .units { font-size: 1.2rem; }
+    .dht-labels{
+      font-size: 1.5rem;
+      vertical-align:middle;
+      padding-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <h1>My Sensor Data App</h1>
+    <div>
+        <a href="/Home">Home</a>
+        <a href="/" onclick="logout()">Logout</a>
+        <a href="/query">Query Data</a>
+    </div>
+</nav>
+  <h2>ESP32 DHT Server</h2>
+  <p>
+    <i class="fas fa-thermometer-half" style="color:#059e8a;"></i> 
+    <span class="dht-labels">Temperature</span> 
+    <span id="temperature">%TEMPERATURE%</span>
+    <sup class="units">&deg;C</sup>
+  </p>
+  <p>
+    <i class="fas fa-tint" style="color:#00add6;"></i> 
+    <span class="dht-labels">Humidity</span>
+    <span id="humidity">%HUMIDITY%</span>
+    <sup class="units">&percnt;</sup>
+  </p>
+  <!-- <h3>Sensor Data</h3>
+<table id="data-table">
+  <tr>
+    <th>Temperature</th>
+    <th>Humidity</th>
+    <th>MQ Value</th>
+  </tr>
+  %SENSOR_TABLE%
+</table> -->
+
+  <!-- Hiển thị hình ảnh quạt -->
+  <p>Fan:  <span id="fanImage"></span> </p>
+  
+  <!-- Hiển thị hình ảnh đèn -->
+  <p>Light:  <span id="lightImage"></span> </p>
+  <h4>Sensor Data Chart</h4>
+  <canvas id="sensorChart"></canvas>
+
+</body>
+
+<script>
+//   const dataTable = document.getElementById('data-table');
+
+// function updateData() {
+//   fetch('/get-sensor-data') // Đổi theo đường dẫn thích hợp
+//     .then(response => response.json())
+//     .then(data => {
+//       // Xóa dữ liệu cũ
+//       dataTable.innerHTML = '<tr><th>Temperature</th><th>Humidity</th><th>MQ Value</th></tr>';
+
+//       // Thêm dữ liệu mới vào bảng
+//       data.forEach(item => {
+//         const row = dataTable.insertRow();
+//         row.insertCell().innerText = item.temperature;
+//         row.insertCell().innerText = item.humidity;
+//         row.insertCell().innerText = item.mqValue;
+//       });
+//     });
+// }
+
+// // Gọi hàm cập nhật dữ liệu mỗi 5 giây
+// setInterval(updateData, 5000);
+
+  // Khởi tạo biểu đồ
+  var ctx = document.getElementById('sensorChart').getContext('2d');
+    var sensorChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [
+          {
+            label: 'Temperature (°C)',
+            data: [],
+            borderColor: 'red',
+            fill: false,
+          },
+          {
+            label: 'Humidity (%)',
+            data: [],
+            borderColor: 'blue',
+            fill: false,
+          },
+          {
+            label: 'MQ135 Value',
+            data: [],
+            borderColor: 'green',
+            fill: false,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          x: {
+            display: true,
+          },
+          y: {
+            display: true,
+            suggestedMin: 0,
+            suggestedMax: 100,
+          },
+        },
+      },
+    });
+
+    // Thiết lập kết nối WebSocket
+    var socket = new WebSocket('ws://' + window.location.hostname + ':81/');
+    socket.onmessage = function(event) {
+      var data = JSON.parse(event.data);
+      var time = new Date().toLocaleTimeString();
+      
+      sensorChart.data.labels.push(time);
+      sensorChart.data.datasets[0].data.push(data.temperature);
+      sensorChart.data.datasets[1].data.push(data.humidity);
+      sensorChart.data.datasets[2].data.push(data.mqValue);
+      
+      // Giới hạn số lượng điểm dữ liệu hiển thị trên biểu đồ
+      if (sensorChart.data.labels.length > 20) {
+        sensorChart.data.labels.shift();
+        sensorChart.data.datasets[0].data.shift();
+        sensorChart.data.datasets[1].data.shift();
+        sensorChart.data.datasets[2].data.shift();
+      }
+      
+      sensorChart.update();
+    };
+ // Tự động cập nhật dữ liệu và biểu đồ mỗi 30s
+ setInterval(function() {
+    updateSensorDataTable();
+    sensorChart.update();
+  }, 30000);
+  function logout() {
+            // Xử lý đăng xuất ở đây (ví dụ: xóa thông tin đăng nhập khỏi localStorage)
+            
+            // Sau khi xử lý đăng xuất, chuyển hướng về trang đăng nhập
+            window.location.href = "/login"; // Đổi thành đường dẫn thực tế của trang đăng nhập
+        }
+setInterval(function () {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("temperature").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", "/temperature", true);
+  xhttp.send();
+}, 10000);
+
+setInterval(function () {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("humidity").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", "/humidity", true);
+  xhttp.send();
+}, 1000);
+
+// Hàm để thay đổi nguồn ảnh dựa trên trạng thái
+function updateFanImage(isFanOn) {
+  var fanImage = document.getElementById("fanImage");
+  if (isFanOn) {
+    fanImage.innerHTML  = '<img width="200" height="200" src="https://usagif.com/wp-content/uploads/2022/fzk5d/fan-gif-76-blue-fan-moving.gif" alt="Fan GIF">';
+  }else{
+    fanImage.innerHTML = '<img src="https://www.gale.vn/uploads/products/2017_05/canh-quat.jpg" width="100" height="100">';
+  }
+}
+
+function updateLightImage(isLightOn) {
+  var lightImage = document.getElementById("lightImage");
+  if (isLightOn==true ) {
+    lightImage.innerHTML = '<img src="https://as1.ftcdn.net/v2/jpg/02/96/31/22/1000_F_296312264_pWPPZNPzpKkVZdNAV7K16LlKRkVDok9U.jpg" width="100" height="100">';
+  } else {
+    lightImage.innerHTML = '<img src="https://png.pngtree.com/png-vector/20190723/ourlarge/pngtree-seo-bulb-web-icon-flat-line-filled-gray-icon-png-image_1569373.jpg" width="200" height="200" >';
+  }
+}
+
+// Tự động cập nhật ảnh theo trạng thái quạt và đèn
+setInterval(function () {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      var fanStatus = this.responseText;
+      updateFanImage(fanStatus);
+    }
+  };
+  xhttp.open("GET", "/fan-status", true);
+  xhttp.send();
+}, 1000);
+
+setInterval(function () {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      var lightStatus = this.responseText;
+      updateLightImage(lightStatus);
+    }
+  };
+  xhttp.open("GET", "/light-status", true);
+  xhttp.send();
+}, 1000);
+alert("Dang nhap thanh cong!");
+</script>
+
+</html>)rawliteral";

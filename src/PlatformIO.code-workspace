@@ -1,0 +1,35 @@
+{
+	"folders": [
+		{
+			"path": "../../../../Users/ADMIN/Documents/PlatformIO"
+		},
+		{
+			"name": "web_esp32",
+			"path": ".."
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "web_esp32",
+		"files.associations": {
+			"*.embeddedhtml": "html",
+			"*.html": "html",
+			"cmath": "cpp"
+		},
+		"sqltools.connections": [
+			{
+				"mysqlOptions": {
+					"authProtocol": "default",
+					"enableSsl": "Disabled"
+				},
+				"previewLimit": 50,
+				"server": "localhost",
+				"port": 3306,
+				"driver": "MySQL",
+				"database": "ESP32-SENSOR",
+				"name": "DESKTOP-2EP69KG",
+				"username": "sa",
+				"password": "k0963362748247"
+			}
+		]
+	}
+}
